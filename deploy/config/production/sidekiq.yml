@@ -1,0 +1,8 @@
+---
+:verbose: false
+:pidfile: ./tmp/pids/sidekiq.pid
+:namespace: sidekiq_production
+:concurrency:  25
+:queues:
+  - [store_asset, 10]
+  - [default, 5]
