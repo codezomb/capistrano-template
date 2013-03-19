@@ -40,24 +40,21 @@ set :normalize_asset_timestamps, false
 # SSH Options
 #
 ssh_options[:forward_agent] = true
-ssh_options[:keys] = '<key path>'
+ssh_options[:keys] = "<key path>"
 
 #
 # Deployment Tasks
 #
 namespace :deploy do
-  desc "create the config and sockets folders"
+  desc "create the necessary folders"
   task :create_directories, :role => :web do
-    run "mkdir -p #{shared_path}/config"
-    run "mkdir -p #{shared_path}/sockets"
-    run "mkdir -p #{shared_path}/uploads"
+    run "mkdir -p #{shared_path}/{config,sockets,uploads}"
   end
 
-  desc "symlink the config files"
+  desc "upload and symlink the database config"
   task :link_files, :role => :web do
     put(File.read( "config/database.yml" ),"#{shared_path}/config/database.yml", :via => :scp)
     run "ln -nsf #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nsf #{shared_path}/uploads #{release_path}/public/uploads"
   end
 end
 
